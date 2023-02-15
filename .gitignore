@@ -141,4 +141,6 @@ pretrained
 YOLOX_outputs
 .git
 .idea/
+images/
+images/*.*
 

@@ -1,4 +1,5 @@
 #image -f exps/example/mot/yolox_x_mix_det.py -c pretrained/bytetrack_x_mot17.pth.tar --fp16 --fuse --save_result
+#video -f exps/example/mot/yolox_x_mix_det.py -c pretrained/bytetrack_x_mot17.pth.tar --fp16 --fuse --save_result
 #python3 tools/train.py -f exps/example/mot/your_exp_file.py -d 8 -b 48 --fp16 -o -c pretrained/yolox_x.pth
 import argparse
 import os
@@ -32,6 +33,7 @@ def make_parser():
     parser.add_argument(
         #"--path", default="./datasets/mot/train/MOT17-05-FRCNN/img1", help="path to images or video"
         "--path", default="./videos/palace.mp4", help="path to images or video"
+        #"--path", default="images", help="path to images or video"
     )
     parser.add_argument("--camid", type=int, default=0, help="webcam demo camera id")
     parser.add_argument(
@@ -260,11 +262,17 @@ def imageflow_demo(predictor, vis_folder, current_time, args):
     frame_id = 0
     results = []
     while True:
+
         if frame_id % 20 == 0:
             logger.info('Processing frame {} ({:.2f} fps)'.format(frame_id, 1. / max(1e-5, timer.average_time)))
         ret_val, frame = cap.read()
         if ret_val:
             outputs, img_info = predictor.inference(frame, timer)
+            #anzs add
+            id_feature = outputs[0][:, 7:]  # [detect_num, 128]
+            id_feature = F.normalize(id_feature, dim=1)  # normalization of id embeddings
+            id_feature = id_feature.cpu().numpy()
+
             if outputs[0] is not None:
                 online_targets = tracker.update(outputs[0], [img_info['height'], img_info['width']], exp.test_size)
                 online_tlwhs = []
