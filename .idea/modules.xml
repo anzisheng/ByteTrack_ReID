@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ByteTrack.iml" filepath="$PROJECT_DIR$/.idea/ByteTrack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ByteTrack_ReID.iml" filepath="$PROJECT_DIR$/.idea/ByteTrack_ReID.iml" />
     </modules>
   </component>
 </project>
